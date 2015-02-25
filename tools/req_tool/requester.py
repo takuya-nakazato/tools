@@ -19,28 +19,31 @@ def req(i):
 
   try:
     res = urllib2.urlopen(URL) 
-    log = str(i+1)+": "+str(res.code)+" "+res.msg
+    log = "  "+str(i+1)+":\t"+str(res.code)+"\t"+res.msg
     print log
   except urllib2.HTTPError, e:    
-    log = str(i+1)+": "+str(e.code)+" "+e.reason
+    log = "  "+str(i+1)+":\t"+str(e.code)+"\t"+e.reason
     print log
 
   f.write(log+"\n")
+
+
+def write_now(msg):
+  
+  now = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+  f.write("\n"+msg+":  "+now+"\n\n")
 
 	
 if __name__ == "__main__":
 
   print "\nRequest", LOOPS, "times.\n"
-
   f = open("log.txt","w")
-  now = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-  f.write("start:  "+now+"\n\n")
+  write_now("Start");
 
   for i in range(LOOPS):
     req(i)
-
-  now = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-  f.write("\nfinish: "+now+"\n")
+  
+  write_now("End")
   f.close()
 
   print "\nFinished.\n"
